@@ -163,9 +163,9 @@ end
             serialized_data = association_serializer.serializable_object
             key = association.root_key
             if hash.has_key?(key)
-              hash[key].concat(serialized_data).uniq!
+              hash[key].concat(*serialized_data).uniq!
             else
-              hash[key] = serialized_data
+              hash[key] = [*serialized_data]
             end
           end
         end
