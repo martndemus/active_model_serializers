@@ -43,7 +43,11 @@ module ActiveModel
       end
 
       def build_serializer(object, options = {})
-        serializer_class(object).new(object, options.merge(self.options))
+        if object.nil?
+          ActiveModel::DefaultSerializer.new(object, options.merge(@options))
+        else
+          serializer_class(object).new(object, options.merge(self.options))
+        end
       end
 
       class HasOne < Association
