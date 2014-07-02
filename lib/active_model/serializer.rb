@@ -158,7 +158,13 @@ end
         if included_associations.include? name
           if association.embed_in_root?
             association_serializer = build_serializer(association)
-            hash.merge! association_serializer.embedded_in_root_associations
+            association_serializer.embedded_in_root_associations.each do |key, value|
+              if hash[key].is_a?(Array)
+                hash[key].concat([*value]).uniq!
+              else
+                hash[key] = value
+              end
+            end
 
             serialized_data = [*association_serializer.serializable_object]
             key = association.root_key
